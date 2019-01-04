@@ -1,6 +1,7 @@
 package intro_to_array_lists;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ArrayListDemo {
 	public static void main(String[] args) {
@@ -43,6 +44,9 @@ public class ArrayListDemo {
 			System.out.println(j);
 		}
 		System.out.println("\n");
+		
+		// Sorting -dmc
+		Collections.sort(numbers);
 		
 		//iterating through list with for-each loop
 		for(Integer j : numbers){
