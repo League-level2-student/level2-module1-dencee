@@ -38,11 +38,11 @@ class Segment {
 Segment headSeg;
 
 // 6. Create and initialize a String to hold the direction of your snake e.g. "up"
-String direction = "";
+String direction = "up";
 
 // 7. Create and initialize a variable to hold how many pieces of food the snake has eaten.
 // give it a value of 1 to start.
-int numFoodEaten;
+int numFoodEaten = 1;
 
 // 8. Create and initialize foodX and foodY variables to hold the location of the food.
 int foodX = 100;
@@ -77,12 +77,14 @@ void draw() {
   drawFood();
   drawSnake();
   move();
+  collision();
 }
 
 
 // 13. Complete the drawFood method below. (Hint: each piece of food should be a 10 by 10 rectangle).
 
 void drawFood() {
+  fill( 0, 255, 0 );
   rect(foodX, foodY, 10, 10);
 }
 
@@ -119,10 +121,12 @@ void move() {
     // mystery code goes here 
     headSeg.setX( headSeg.getX() + 10 );
     break;
+  default:
+    // Should never get here
+    print("ERROR: invalid direction");
+    break;
   }
   
-
-
   // 17. Call the checkBoundaries method to make sure the snake head doesn't go off the screen.
   checkBoundaries();
 }
@@ -145,8 +149,21 @@ void keyPressed() {
 
 
 // 19. check if your head is out of bounds (teleport your snake head to the other side).
-
 void checkBoundaries() {
+  // Check low X value, then high Y value
+  if( headSeg.getX() < 0 ){
+    headSeg.setX( width - 10 );
+  } else if( headSeg.getX() > width ){
+    headSeg.setX( 0 );
+  }
+  
+  // Check low Y value, then high Y value
+  if( headSeg.getY() < 0 ){
+    headSeg.setY( height - 10 );
+  } else if( headSeg.getY() > height ){
+    headSeg.setY( 0 );
+  }
+  
 }
 
 
@@ -161,6 +178,15 @@ void collision() {
 
   // If the segment is colliding with a piece of food...
      // Increase the amount of food eaten and set foodX and foodY to new random locations.
+  int headX = headSeg.getX();
+  int headY = headSeg.getY();
+  
+  if( ( headX >= foodX && headX <= (foodX+10) ) && ( headY >= foodY && headY <= (foodY+10) ) ) {
+    foodX = ( (int)random( 50 ) * 10 );
+    foodY = ( (int)random( 50 ) * 10 );
+    numFoodEaten++;
+    print( numFoodEaten );
+  }
 }
 
 
@@ -187,6 +213,9 @@ void manageTail() {
 
   // To keep your tail the right length:
   // while the tail size is greater than the number of food pieces eaten, remove the first Segment in your tail.
+  while( tailSegs.size() > numFoodEaten ){
+    tailSegs.remove(0);
+  }
 
 }
 
