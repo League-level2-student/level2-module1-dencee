@@ -28,6 +28,7 @@ public class RocketShip extends GameObject {
 	public void update() {
 		this.x += xSpeed;
 		this.y += ySpeed;
+		super.update();
 	}
 
 }

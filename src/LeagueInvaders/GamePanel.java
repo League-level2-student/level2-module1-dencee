@@ -15,6 +15,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Timer timer;
 	RocketShip ship;
 	Font textFont;
+	ObjectManager objManager;
 
 	private final int MENU_STATE = 1;
 	private final int GAME_STATE = 2;
@@ -25,6 +26,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		timer = new Timer((1000 / 60), this);
 		ship = new RocketShip(250, 700, 50, 50);
 		textFont = new Font("Arial", Font.BOLD, 48);
+		objManager = new ObjectManager(ship);
 		currentState = MENU_STATE;
 	}
 
@@ -47,13 +49,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateGameState() {
-
+		objManager.manageEnemies();
+		objManager.checkCollision();
+		objManager.purgeObjects();
+		objManager.update();
+		
+		if( !ship.isAlive ) {
+			currentState = END_STATE;
+		}
 	}
 
 	void drawGameState(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
-		ship.draw(g);
+		objManager.draw(g);
 	}
 
 	void updateEndState() {
@@ -130,6 +139,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			case KeyEvent.VK_DOWN:
 				ship.setYSpeed(5);
 				break;
+			case KeyEvent.VK_SPACE:
+				objManager.addProjectile(new Projectile(ship.x, ship.y, 10, 10));
 			default:
 				System.out.println("ERROR: Invalid key code");
 				break;
@@ -138,8 +149,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		if (key == KeyEvent.VK_ENTER) {
 			currentState = (currentState == END_STATE) ? MENU_STATE : currentState + 1;
-		} else if (key == KeyEvent.VK_SPACE) {
-
 		}
 	}
 
