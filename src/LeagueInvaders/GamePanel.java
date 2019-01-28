@@ -7,31 +7,57 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
+	private static final long serialVersionUID = 1L;
 	Timer timer;
 	RocketShip ship;
 	Font textFont;
 	ObjectManager objManager;
+
+	private final int ROCKET_WIDTH = 50;
+	private final int ROCKET_HEIGHT = 50;
 
 	private final int MENU_STATE = 1;
 	private final int GAME_STATE = 2;
 	private final int END_STATE = 3;
 	int currentState;
 
+	public static BufferedImage alienImg;
+	public static BufferedImage rocketImg;
+	public static BufferedImage bulletImg;
+	public static BufferedImage spaceImg;
+
 	public GamePanel() {
 		timer = new Timer((1000 / 60), this);
-		ship = new RocketShip(250, 700, 50, 50);
 		textFont = new Font("Arial", Font.BOLD, 48);
+		ship = new RocketShip(250, 700, ROCKET_WIDTH, ROCKET_HEIGHT);
 		objManager = new ObjectManager(ship);
+
+		try {
+			alienImg = ImageIO.read(this.getClass().getResourceAsStream("alien.png"));
+			rocketImg = ImageIO.read(this.getClass().getResourceAsStream("rocket.png"));
+			bulletImg = ImageIO.read(this.getClass().getResourceAsStream("bullet.png"));
+			spaceImg = ImageIO.read(this.getClass().getResourceAsStream("space.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		currentState = MENU_STATE;
 	}
 
 	public void startGame() {
 		timer.start();
+	}
+
+	void updateScore() {
+
 	}
 
 	void updateMenuState() {
@@ -53,15 +79,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		objManager.checkCollision();
 		objManager.purgeObjects();
 		objManager.update();
-		
-		if( !ship.isAlive ) {
+
+		if (!ship.isAlive) {
 			currentState = END_STATE;
 		}
 	}
 
 	void drawGameState(Graphics g) {
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
+		// Draw background
+//		g.setColor(Color.BLACK);
+//		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
+		g.drawImage(GamePanel.spaceImg, 0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
+		
+		// Draw score
+		g.setColor(Color.WHITE);
+		g.drawString("Score: " + objManager.getScore(), 20, 50);
+
+		// Draw all objects: ship, aliens, bullets, etc.
 		objManager.draw(g);
 	}
 
@@ -94,15 +128,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			System.out.println("ERROR: Invalid Game State");
 			break;
 		}
-
 	}
 
+	// This gets called each time the timer goes off.
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		ship.update();
+
+		// Used to call the paint component immediately
 		repaint();
 
+		// Update the parameters (x, y, etc.) of the objects drawn
 		switch (currentState) {
 		case MENU_STATE:
 			updateMenuState();
@@ -140,7 +177,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				ship.setYSpeed(5);
 				break;
 			case KeyEvent.VK_SPACE:
-				objManager.addProjectile(new Projectile(ship.x, ship.y, 10, 10));
+				objManager.addProjectile(new Projectile(ship.x + ROCKET_WIDTH / 2, ship.y, 10, 10));
+				break;
 			default:
 				System.out.println("ERROR: Invalid key code");
 				break;
@@ -148,6 +186,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 		if (key == KeyEvent.VK_ENTER) {
+
+			// Must be called before updating the current state so the ship and
+			// objects are recreated when in END_STATE
+			if (currentState == END_STATE) {
+				this.ship = new RocketShip(250, 700, ROCKET_WIDTH, ROCKET_HEIGHT);
+				this.objManager = new ObjectManager(this.ship);
+			}
+
 			currentState = (currentState == END_STATE) ? MENU_STATE : currentState + 1;
 		}
 	}
@@ -155,10 +201,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
-		
-		if( ( key == KeyEvent.VK_LEFT ) || ( key == KeyEvent.VK_RIGHT ) ) {
+
+		if ((key == KeyEvent.VK_LEFT) || (key == KeyEvent.VK_RIGHT)) {
 			ship.setXSpeed(0);
-		} else if( ( key == KeyEvent.VK_UP ) || ( key == KeyEvent.VK_DOWN ) ) {
+		} else if ((key == KeyEvent.VK_UP) || (key == KeyEvent.VK_DOWN)) {
 			ship.setYSpeed(0);
 		}
 	}

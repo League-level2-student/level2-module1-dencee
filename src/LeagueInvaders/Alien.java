@@ -1,6 +1,5 @@
 package LeagueInvaders;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 public class Alien extends GameObject {
@@ -16,8 +15,9 @@ public class Alien extends GameObject {
 	}
 	
 	public void draw(Graphics g) {
-		g.setColor(Color.YELLOW);
-		g.fillRect(this.x, this.y, this.width, this.height);
+//		g.setColor(Color.YELLOW);
+//		g.fillRect(this.x, this.y, this.width, this.height);
+		g.drawImage(GamePanel.alienImg, x, y, width, height, null);
 	}
 	
 	public void update() {
