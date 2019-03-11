@@ -27,6 +27,7 @@ public class GuestBook implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.add(panel);
+		frame.setTitle("Guest book");
 		
 		panel.add(nameButton);
 		panel.add(viewButton);

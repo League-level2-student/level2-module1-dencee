@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 public class LeagueInvaders {
 	public static final int HEIGHT = 800;
-	public static final int WIDTH = 400;
+	public static final int WIDTH = 1400;
 	JFrame frame;
 	GamePanel panel;
 	

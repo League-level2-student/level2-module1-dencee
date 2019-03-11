@@ -166,12 +166,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			switch (key) {
 			case KeyEvent.VK_LEFT:
 				ship.setXSpeed(-5);
+				System.out.println("LEFT " + ship.x + " " + ship.y);
 				break;
 			case KeyEvent.VK_UP:
 				ship.setYSpeed(-5);
 				break;
 			case KeyEvent.VK_RIGHT:
 				ship.setXSpeed(5);
+				System.out.println("RIGHT " + ship.x + " " + ship.y);
 				break;
 			case KeyEvent.VK_DOWN:
 				ship.setYSpeed(5);
