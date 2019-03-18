@@ -22,6 +22,7 @@ public class MenuScreen extends Screen {
         panel.setBackground( backgroundColor );
         label.setFont( new Font( "Serif", Font.PLAIN, 40 ) );
         label.setText( "MENU" );
+        panel.repaint();
         frame.pack();
     }
 

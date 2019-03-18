@@ -24,8 +24,8 @@ public class GameScreen extends Screen implements ActionListener {
     }
     
     public void drawGame() {
-        panel.setBackground( backgroundColor );
         frame.add( panel );
+        panel.setBackground( backgroundColor );
         
         hangmanImage = createLabelImage( "Snoose5.png" );
         c.gridx = 0;
@@ -42,6 +42,7 @@ public class GameScreen extends Screen implements ActionListener {
         
         guess.addActionListener( this );
         
+        panel.repaint();
         frame.pack();
     }
 

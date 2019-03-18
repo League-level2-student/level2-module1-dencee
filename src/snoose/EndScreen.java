@@ -22,6 +22,7 @@ public class EndScreen extends Screen {
         panel.setBackground( backgroundColor );
         label.setFont( new Font( "Serif", Font.PLAIN, 80 ) );
         label.setText( "END" );
+        panel.repaint();
         frame.pack();
     }
 }

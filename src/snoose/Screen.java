@@ -34,18 +34,19 @@ public class Screen {
     }
     
     public void removeScreen() {
-        this.frame.getContentPane().remove( panel ); //remove( panel );
+        this.frame.getContentPane().remove( panel );
+        //remove( panel );
         
     }
 
     public JLabel createLabelImage(String fileName) {
-        URL imageURL = getClass().getResource(fileName);
+        URL imageURL = getClass().getResource( fileName );
         if (imageURL == null) {
-            System.err.println("Could not find image " + fileName);
+            System.err.println( "Could not find image " + fileName );
             return new JLabel();
         }
-        Icon icon = new ImageIcon(imageURL);
-        JLabel imageLabel = new JLabel(icon);
+        Icon icon = new ImageIcon( imageURL );
+        JLabel imageLabel = new JLabel( icon );
         return imageLabel;
     }
 

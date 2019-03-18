@@ -38,7 +38,7 @@ public class Snoose implements KeyListener {
         new Snoose().startGame();
     }
 
-    private void startGame() throws MalformedURLException {
+    private void startGame() {
         frame = new JFrame( "Hangman" );
         frame.setVisible( true );
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -54,11 +54,11 @@ public class Snoose implements KeyListener {
     private void selectScreen() {
         
         if( gameState == MENU ) {
-            new MenuScreen( frame ).drawMenu();
+            menu.drawMenu();
         } else if( gameState == GAME ) {
-            new GameScreen( frame ).drawGame();
+            game.drawGame();
         } else if( gameState == END ) {
-            new EndScreen( frame ).drawEnd();
+            end.drawEnd();
         }
     }
 
