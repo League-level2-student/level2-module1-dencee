@@ -39,7 +39,7 @@ public class Snoose implements KeyListener {
     }
 
     private void startGame() {
-        frame = new JFrame( "Hangman" );
+        frame = new JFrame( "Snoose" );
         frame.setVisible( true );
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         frame.addKeyListener( this );

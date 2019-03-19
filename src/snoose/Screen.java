@@ -35,8 +35,6 @@ public class Screen {
     
     public void removeScreen() {
         this.frame.getContentPane().remove( panel );
-        //remove( panel );
-        
     }
 
     public JLabel createLabelImage(String fileName) {
